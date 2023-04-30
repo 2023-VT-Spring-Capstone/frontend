@@ -1,26 +1,12 @@
-# Free Tailwind dashboard template
+# High Volatility Stocks Analyzer
 
-![Mosaic TailwindCSS template preview](https://user-images.githubusercontent.com/2683512/115404502-ad322d80-a1ed-11eb-91c0-1aa79b0949f0.png)
 
-**Mosaic Lite** is a responsive dashboard template built on top of TailwindCSS and fully coded in React. It comes with several pre-coded charts (built with Chart.js 3) and widgets, and it's a great starting for anyone who wants to create a user interface for SaaS products, administrator dashboards, modern web apps, and more.
+![image](https://user-images.githubusercontent.com/14934562/235375707-7324aa5a-d50f-4da5-9527-4a65f0035eb4.png)
 
-Use it for whatever you want, and be sure to reach us out on [Twitter](https://twitter.com/Cruip_com) if you build anything cool/useful with it.
+![image](https://user-images.githubusercontent.com/14934562/235375702-8744ce7a-cf5c-45c0-9338-e8e4b996dd87.png)
 
-Created and maintained with ❤️ by [Cruip.com](https://cruip.com/).
+![image](https://user-images.githubusercontent.com/14934562/235375745-ed6947bd-803d-4a6b-8168-a950fc2f9684.png)
 
-## Live demo
-
-Check the live demo here 👉️ [https://mosaic.cruip.com/](https://mosaic.cruip.com/)
-
-## Mosaic Pro
-
-[![Mosaic Pro](https://user-images.githubusercontent.com/2683512/151177026-3d063355-976d-4fdb-a5ed-9c1501c58af2.png)](https://cruip.com/mosaic/)
-
-## Design files
-
-If you need the design files, you can download them from Figma's Community 👉 https://bit.ly/3sigqHe
-
-## Table of contents
 
 * [Usage](#usage)
   * [Project setup](#project-setup)
@@ -71,10 +57,6 @@ For more information about what support covers, please see our (FAQs)[https://cr
 - Use it for personal and commercial projects, but please don’t republish, redistribute, or resell the template.
 - Attribution is not required, although it is really appreciated.
 
-## About Us
+## Special Thanks to Cruip
 
-We're an Italian developer/designer duo creating high-quality design/code resources for developers, makers, and startups.
-
-## Stay in the loop
-
-If you would like to know when we release new resources, you can follow us on [Twitter](https://twitter.com/Cruip_com), or you can subscribe to our monthly [newsletter](https://cruip.com/#subscribe).
+follow them on [Twitter](https://twitter.com/Cruip_com), or subscribe to monthly [newsletter](https://cruip.com/#subscribe)
