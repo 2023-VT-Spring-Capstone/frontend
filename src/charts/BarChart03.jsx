@@ -22,9 +22,25 @@ function BarChart03({
   useEffect(() => {
 
     // Calculate sum of values
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    const values = data.datasets.map(x => x.data.reduce(reducer));
-    const max = values.reduce(reducer);
+    // const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    // const values = data.datasets.map(x => {
+    //   if (Array.isArray(x.data)) {
+    //     return x.data.reduce(reducer);
+    //   } else if (typeof x.data === 'number') {
+    //     return x.data;
+    //   } else {
+    //     return 0;
+    //   }
+    // });
+    // const max = values.reduce(reducer);
+
+    const max = data.datasets.reduce((acc, curr) => {
+      if (Array.isArray(curr.data)) {
+        return acc + curr.data.reduce((a, b) => a + b, 0);
+      } else {
+        return acc + curr.data;
+      }
+    }, 0);
 
     const ctx = canvas.current;
     // eslint-disable-next-line no-unused-vars
@@ -105,7 +121,12 @@ function BarChart03({
             value.style.fontWeight = tailwindConfig().theme.fontWeight.medium;
             value.style.marginLeft = tailwindConfig().theme.margin[3];
             value.style.color = item.text === 'Other' ? tailwindConfig().theme.colors.slate[400] : item.fillStyle;
-            const theValue = c.data.datasets[item.datasetIndex].data.reduce((a, b) => a + b, 0);
+            let theValue = 0;
+            if (Array.isArray(c.data.datasets[item.datasetIndex].data)) {
+              theValue = c.data.datasets[item.datasetIndex].data.reduce((a, b) => a + b, 0);
+            } else {
+              theValue = c.data.datasets[item.datasetIndex].data;
+            }
             const valueText = document.createTextNode(`${parseInt(theValue / max * 100)}%`);
             const labelText = document.createTextNode(item.text);
             value.appendChild(valueText);
@@ -121,7 +142,7 @@ function BarChart03({
     });
     return () => chart.destroy();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <div className="grow flex flex-col justify-center">

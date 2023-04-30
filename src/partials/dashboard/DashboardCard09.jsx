@@ -4,9 +4,8 @@ import BarChart from '../../charts/BarChart02';
 
 // Import utilities
 import { tailwindConfig } from '../../utils/Utils';
-import { useState, useEffect } from 'react';
 
-function DashboardCard09() {
+function DashboardCard09({ohlcData}) {
 
   const chartData = {
     labels: [
@@ -18,7 +17,8 @@ function DashboardCard09() {
       {
         label: 'Stack 1',
         data: [
-          6200, 9200, 6600, 8800, 5200, 9200,
+          // 6200, 9200, 6600, 8800, 5200, 9200,
+          1,2,3,4,5
         ],
         backgroundColor: tailwindConfig().theme.colors.indigo[500],
         hoverBackgroundColor: tailwindConfig().theme.colors.indigo[600],
@@ -29,7 +29,8 @@ function DashboardCard09() {
       {
         label: 'Stack 2',
         data: [
-          -4000, -2600, -5350, -4000, -7500, -2000,
+          // -4000, -2600, -5350, -4000, -7500, -2000,
+          1,2,3,4,5
         ],
         backgroundColor: tailwindConfig().theme.colors.indigo[200],
         hoverBackgroundColor: tailwindConfig().theme.colors.indigo[300],
@@ -39,21 +40,11 @@ function DashboardCard09() {
     ],
   };
 
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch('http://localhost/stock/BB');
-      const newData = await response.json();
-      setData(newData);
-    }
-    fetchData();
-  }, []);
 
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
       <header className="px-5 py-4 border-b border-slate-100 flex items-center">
-        <h2 className="font-semibold text-slate-800">open, high, low and close</h2>
+        <h2 className="font-semibold text-slate-800">OHLC chart</h2>
         <Info className="ml-2" containerClassName="min-w-80">
           <div className="text-sm">Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</div>
         </Info>

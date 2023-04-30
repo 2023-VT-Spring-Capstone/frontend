@@ -8,7 +8,7 @@ function DashboardCard07({data}) {
   }
   return (
 
-    <div className="col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-slate-200">
+    <div className="col-span-full xl:col-span-12 bg-white shadow-lg rounded-sm border border-slate-200">
       <header className="px-5 py-4 border-b border-slate-100">
         <h2 className="font-semibold text-slate-800">Reddit Posts</h2>
         <p>Total: {data.total}</p>
@@ -20,18 +20,18 @@ function DashboardCard07({data}) {
         <div className="w-full h-96 overflow-x-auto">
           <table className="table-auto w-full">
             {/* Table header */}
-            <thead className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm">
+            <thead className="text-xs text-slate-400 bg-slate-50 rounded-sm">
               <tr>
-                <th className="p-2 w-1/12">
+                <th className="p-2 w-2/12">
                   <div className="font-semibold text-left">date</div>
                 </th>
                 <th className="p-2 w-2/12">
                   <div className="font-semibold text-center">title</div>
                 </th>
-                <th className="p-2 w-1/12">
+                <th className="p-2 w-fit">
                   <div className="font-semibold text-center">ticker</div>
                 </th>
-                <th className="p-2 w-1/12">
+                <th className="p-2 w-fit">
                   <div className="font-semibold text-center">upvote ratio</div>
                 </th>
                 <th className="p-2 w-1/12">
@@ -46,7 +46,7 @@ function DashboardCard07({data}) {
                 <th className="p-2 w-1/12">
                   <div className="font-semibold text-center">sentiment</div>
                 </th>
-                <th className="p-2 w-1/12">
+                <th className="p-2 w-fit">
                   <div className="font-semibold text-center">subreddit</div>
                 </th>
                 <th className="p-2 w-1/12">
@@ -56,7 +56,7 @@ function DashboardCard07({data}) {
             </thead>
             {/* Table body */}
             {data.detail && data.detail.length > 0 && (
-            <tbody className="text-sm font-medium divide-y divide-slate-100">
+            <tbody className="text-xs font-small divide-y divide-slate-100">
               {data.detail.map((item) => (
                 <tr key={item.id}>
                   <td className="px-3">{item.created_time}</td>
@@ -68,9 +68,14 @@ function DashboardCard07({data}) {
                   <td className="px-3">{item.bullish}</td>
                   <td className="px-3">{item.sentiment}</td>
                   <td className="px-3">{item.subreddit}</td>
-                  <td className="px-3">
+                  {/* <td className="px-3">
                     <a href={`https://www.reddit.com/${item.permalink}`} className="underline hover:no-underline">
                       link
+                    </a>
+                  </td> */}
+                  <td className="px-3">
+                    <a href={`https://www.reddit.com/${item.permalink}`} className="no-underline hover:underline" target="_blank" rel="noopener noreferrer">
+                      link 🔗
                     </a>
                   </td>
                 </tr>

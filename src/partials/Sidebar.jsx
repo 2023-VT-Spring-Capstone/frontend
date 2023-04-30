@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import SearchBar from './actions/SearchBar';
 
 import SidebarLinkGroup from './SidebarLinkGroup';
 
@@ -101,7 +102,17 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               />
             </svg>
           </NavLink>
+          
         </div>
+        <h3 className="text-xs uppercase text-slate-500 font-semibold pl-3">
+              <span className="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">
+                •••
+              </span>
+              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Stock Name</span>
+              <div className="pt-2 pb-4">
+                  <SearchBar className="" placeholder="Find a ticker..." ></SearchBar>
+              </div>
+        </h3>
 
         {/* Links */}
         <div className="space-y-8">

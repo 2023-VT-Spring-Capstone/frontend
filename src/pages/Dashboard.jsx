@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
@@ -19,15 +18,21 @@ import DashboardCard10 from '../partials/dashboard/DashboardCard10';
 import DashboardCard11 from '../partials/dashboard/DashboardCard11';
 import DashboardCard12 from '../partials/dashboard/DashboardCard12';
 import DashboardCard13 from '../partials/dashboard/DashboardCard13';
+import DashboardCard14 from '../partials/dashboard/DashboardCard14';
 import Banner from '../partials/Banner';
 
 function Dashboard() {
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [keyword, setKeyword] = useState('');
   const [isSearchClicked, setIsSearchClicked] = useState(false);
-  const [data, setData] = useState({});
+  const [redditData, setRedditData] = useState({});
+  const [redditSentimentData, setRedditSentimentData] = useState({});
+  const [redditSources, setSubredditSrouceData] = useState({});
+  const [stockInfoData, setInfoData] = useState([]);
+  const [detailInfoData, setDetailData] = useState([]);
+  const [histInfoData, setHistData] = useState([]);
+  const [newsData, setNewsData] = useState([]);
   const today = new Date();
 
   // Get year, month, and day from the date object
@@ -39,12 +44,43 @@ function Dashboard() {
   const formattedDate = `${year}-${month}-${day}`;
   
   const handleSearch = async () => {
-    const response = await fetch(`http://localhost/detailByItem?date=${formattedDate}&keyWord=${keyword}`);
+    setRedditData({}); // clear the previous redditData
+    // const response = await fetch(`http://localhost/detailByItem?startDate=${formattedDate}&endDate=${formattedDate}&keyWord=${keyword}`);
+    const response = await fetch(`http://localhost/detailByItem?startDate=2023-04-01&endDate=2023-04-30&keyWord=${keyword}`);
     const data = await response.json();
-    setData(data);
+    setRedditData(data);
+    let sentimentCounts = [];
+    sentimentCounts['bullishCount'] = data.bullishCount;
+    sentimentCounts['bearishCount'] = data.bearishCount;
+    sentimentCounts['neutralCount'] = data.neutralCount;
+
+    setRedditSentimentData(sentimentCounts);
+    setSubredditSrouceData(data.dataOrigin);
+
     setIsSearchClicked(true);
   }
 
+  useEffect(() => {
+    async function fetchInfoData() {
+      const stockResponse = await fetch('http://localhost/stock/BB/info');
+      const stockData = await stockResponse.json();
+      setInfoData(stockData);
+    }
+    async function fetchDetailData() {
+      const response = await fetch('http://localhost/stock/BB');
+      const detailData = await response.json();
+      setDetailData(detailData.info);
+
+      let timePrice = [];
+      timePrice['time'] = detailData.histPrice.datetimeList.map((time) => time.split('T')[0]);
+      timePrice['price'] = detailData.histPrice.closePriceList;
+      setHistData(timePrice);
+
+      setNewsData(detailData.newsList);
+    }
+    fetchDetailData();
+    // fetchHistData();
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -62,7 +98,7 @@ function Dashboard() {
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
             {/* Welcome banner */}
-            <WelcomeBanner />
+            <WelcomeBanner data={detailInfoData}/>
 
             {/* Cards */}
             <div className="grid grid-cols-12 gap-6">
@@ -74,21 +110,22 @@ function Dashboard() {
               {/* Line chart (Acme Professional) */}
               {/* <DashboardCard03 /> */}
 
-              {/* Basic Info (TICKER) */}
-              <DashboardCard10 />
+              {/* Summary (TICKER) */}
+              <DashboardCard14 data={detailInfoData}/>
+              {/* Analysis (TICKER) */}
+              <DashboardCard10 data={detailInfoData}/>
               {/* Stacked bar chart (open, high, low and close) */}
-              <DashboardCard09 />
-
+              {/* <DashboardCard09 ohlcData={detailInfoData}/> */}
               {/* Line chart (Real Time Traffic) */}
               <DashboardCard05 />
+
               {/* Line chart (History Price & Social Sentiment for (TICKER_SYMBOL)) */}
-              <DashboardCard08 />
+              <DashboardCard08 data={histInfoData}/>
             </div> 
             
 
             {/* Dashboard actions */}
             < div className="sm:flex sm:justify-end sm:items-center m-8">
-
               {/* Left: Avatars */}
               {/* <DashboardAvatars /> */}
 
@@ -116,23 +153,21 @@ function Dashboard() {
               </div>
             </div>
 
-
-            <div className="grid grid-cols-13 gap-6">
-              {/* Doughnut chart (Sentiment Distribution) */}
-              {/* <DashboardCard06 /> */}
+            <div className="grid grid-cols-12 gap-6">
               {/* Table (Reddit Posts) */}
-              <DashboardCard07  data={data}/>
+              <DashboardCard07  data={redditData}/>
               {/* Card (Recent News) */}
-              <DashboardCard12 />
+              {/* Sentiment Distribution */}
+              <DashboardCard11 data={redditSentimentData}/>
+              {/* Doughnut chart (Sentiment Distribution) */}
+              <DashboardCard06 data={redditSources}/>
+              {/* Card (Recent News) */}
+              <DashboardCard12 data={newsData}/>
               {/* Bar chart (Direct vs Indirect) */}
-              <DashboardCard04 />
-              {/* Card (Reasons for Refunds) */}
-              <DashboardCard11 />
+              {/* <DashboardCard04 /> */}
               {/* Card (Income/Expenses) */}
-              <DashboardCard13 />
-              
+              {/* <DashboardCard13 /> */}
             </div>
-
           </div>
         </main>
 
