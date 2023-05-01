@@ -22,6 +22,11 @@ import DashboardCard14 from '../partials/dashboard/DashboardCard14';
 import Banner from '../partials/Banner';
 
 function Dashboard() {
+  const SYMBOL = "AMC";
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [keyword, setKeyword] = useState('');
@@ -43,10 +48,28 @@ function Dashboard() {
   // Format the date as "YYYY-MM-DD"
   const formattedDate = `${year}-${month}-${day}`;
   
+  const onSelectDates = (dates) => {
+    //make sure dates[0] & dates[1] are both not null
+    if (dates[0]) {
+      setStartDate(dates[0]);
+    }
+    if (dates[1]) {
+      setEndDate(dates[1]);
+    }
+  }
+
   const handleSearch = async () => {
+    const symbol = sessionStorage.getItem('tickerSymbol');
+    const keywords = [symbol, keyword];
+    const encodedKeywords = encodeURIComponent(keywords.join(","));
     setRedditData({}); // clear the previous redditData
-    // const response = await fetch(`http://localhost/detailByItem?startDate=${formattedDate}&endDate=${formattedDate}&keyWord=${keyword}`);
-    const response = await fetch(`http://localhost/detailByItem?startDate=2023-04-01&endDate=2023-04-30&keyWord=${keyword}`);
+    //chekc if startDate & endDate are available
+    let response;
+    if (startDate && endDate) {
+      response = await fetch(`http://localhost/detailByItem?startDate=${startDate}&endDate=${endDate}&keyWord=${keywords}`);
+    } else {
+      response = await fetch(`http://localhost/detailByItem?startDate=2023-04-01&endDate=2023-04-30&keyWord=${encodedKeywords}`);
+    }
     const data = await response.json();
     setRedditData(data);
     let sentimentCounts = [];
@@ -59,25 +82,51 @@ function Dashboard() {
 
     setIsSearchClicked(true);
   }
+  const handleSymbolSearch = async (tickerSymbol) => {
+    sessionStorage.setItem('tickerSymbol', tickerSymbol);
+    const response = await fetch(`http://localhost/stock/${tickerSymbol}`);
+    const detailData = await response.json();
+    
+    setDetailData(detailData.info);
+
+    let timePrice = [];
+    timePrice['time'] = detailData.histPrice.datetimeList.map((time) => time.split('T')[0]);
+    timePrice['closePrice'] = detailData.histPrice.closePriceList;
+    timePrice['openPrice'] = detailData.histPrice.openPriceList;
+    timePrice['highPrice'] = detailData.histPrice.highPriceList;
+    timePrice['lowPrice'] = detailData.histPrice.lowPriceList;
+    timePrice['volume'] = detailData.histPrice.volumeList;
+    setHistData(timePrice);
+
+    setNewsData(detailData.newsList);
+  };
+
 
   useEffect(() => {
     async function fetchInfoData() {
-      const stockResponse = await fetch('http://localhost/stock/BB/info');
+      const stockResponse = await fetch('http://localhost/stock/AMC/info');
       const stockData = await stockResponse.json();
       setInfoData(stockData);
     }
     async function fetchDetailData() {
-      const response = await fetch('http://localhost/stock/BB');
+      const savedTickerSymbol = sessionStorage.getItem('tickerSymbol');
+      const SYMBOL = savedTickerSymbol ? savedTickerSymbol : "AMC";
+      const response = await fetch(`http://localhost/stock/${SYMBOL}`);
       const detailData = await response.json();
       setDetailData(detailData.info);
 
       let timePrice = [];
       timePrice['time'] = detailData.histPrice.datetimeList.map((time) => time.split('T')[0]);
-      timePrice['price'] = detailData.histPrice.closePriceList;
+      timePrice['closePrice'] = detailData.histPrice.closePriceList;
+      timePrice['openPrice'] = detailData.histPrice.openPriceList;
+      timePrice['highPrice'] = detailData.histPrice.highPriceList;
+      timePrice['lowPrice'] = detailData.histPrice.lowPriceList;
+      timePrice['volume'] = detailData.histPrice.volumeList;
       setHistData(timePrice);
 
       setNewsData(detailData.newsList);
     }
+
     fetchDetailData();
     // fetchHistData();
   }, []);
@@ -92,17 +141,16 @@ function Dashboard() {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
         {/*  Site header */}
-        {/* <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} onSearch={handleSymbolSearch}/>
 
         <main>
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
             {/* Welcome banner */}
             <WelcomeBanner data={detailInfoData}/>
-
             {/* Cards */}
             <div className="grid grid-cols-12 gap-6">
-
+              
               {/* Line chart (Acme Plus) */}
               {/* <DashboardCard01 /> */}
               {/* Line chart (Acme Advanced) */}
@@ -134,13 +182,18 @@ function Dashboard() {
                 {/* Filter button */}
                 <FilterButton />
                 {/* Datepicker built with flatpickr */}
-                <Datepicker />
+                <Datepicker onSelectDates={onSelectDates}/>
                 {/* Add view button */}
                 <div>
                   <input
                     type="text"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch();
+                      }
+                    }}
                     placeholder="keyword"
                   />
                 </div>

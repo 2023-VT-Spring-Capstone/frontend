@@ -9,18 +9,61 @@ function DashboardCard08({data}) {
   const chartData = {
     labels: data['time'],
     datasets: [
-      // Indigo line
       {
-        label: 'Close Price',
-        data: data['price'],
-        borderColor: tailwindConfig().theme.colors.indigo[500],
-        fill: false,
+        label: 'Close',
+        data: data['closePrice'],
+        borderColor: tailwindConfig().theme.colors.red[500],
+        fill: true,
         borderWidth: 2,
         tension: 0,
         pointRadius: 0,
         pointHoverRadius: 3,
-        pointBackgroundColor: tailwindConfig().theme.colors.indigo[500],
+        pointBackgroundColor: tailwindConfig().theme.colors.red[500],
       },
+      {
+        label: 'Open',
+        data: data['openPrice'],
+        borderColor: tailwindConfig().theme.colors.blue[400],
+        fill: true,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.blue[400],
+      },
+      {
+        label: 'High',
+        data: data['highPrice'],
+        borderColor: tailwindConfig().theme.colors.green[500],
+        fill: true,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.green[500],
+      },
+      {
+        label: 'Low',
+        data: data['lowPrice'],
+        borderColor: tailwindConfig().theme.colors.indigo[400],
+        fill: true,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.indigo[400],
+      },
+      // {
+      //   label: 'Volume',
+      //   data: data['volume'],
+      //   borderColor: tailwindConfig().theme.colors.purple[500],
+      //   fill: false,
+      //   borderWidth: 2,
+      //   tension: 0,
+      //   pointRadius: 0,
+      //   pointHoverRadius: 3,
+      //   pointBackgroundColor: tailwindConfig().theme.colors.purple[500],
+      // },
     ],
   };
 
@@ -31,7 +74,7 @@ function DashboardCard08({data}) {
       </header>
       {/* Chart built with Chart.js 3 */}
       {/* Change the height attribute to adjust the chart height */}
-      <LineChart data={chartData} width={595} height={248} />
+      {chartData && <LineChart data={chartData} width={595} height={248} />}
       {/* <div>{data['time']}</div> */}
       {/* <div>{data['price']}</div> */}
     </div>

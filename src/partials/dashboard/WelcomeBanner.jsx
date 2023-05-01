@@ -23,7 +23,7 @@ function WelcomeBanner({data}) {
             </linearGradient>
             <linearGradient x1="50%" y1="24.537%" x2="50%" y2="100%" id="welcome-c">
               <stop stopColor="#4338CA" offset="0%" />
-              <stop stopColor="#6366F1" stopOpacity="0" offset="100%" />
+              <stop stopColor="#6366F1" stopOpacity="0" offset="10%" />
             </linearGradient>
           </defs>
           <g fill="none" fillRule="evenodd">
@@ -54,7 +54,7 @@ function WelcomeBanner({data}) {
 
       {/* Content */}
       <div className="relative">
-        <h1 className="text-2xl md:text-2xl text-slate-800 font-bold mb-1">{data.symbol} </h1>
+        <h1 className="text-7xl md:text-2xl text-slate-800 font-bold mb-1">{data.symbol} </h1>
         <p className="font-bold">currency: {data.currency} </p>
         <p className="font-bold">timezone: {data.timezone}, update: {data.updatedAt}</p>
       </div>

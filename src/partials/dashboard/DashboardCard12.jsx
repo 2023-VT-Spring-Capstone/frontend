@@ -17,7 +17,7 @@ function DashboardCard12({data}) {
           >
           <div className="flex-shrink-0">
             <img
-              src={JSON.parse(article.thumbnail).resolutions[0].url}
+              src={article.thumbnail && JSON.parse(article.thumbnail)?.resolutions?.[0]?.url}
               alt={article.title}
               className="w-24 h-24 object-cover rounded-md"
             />

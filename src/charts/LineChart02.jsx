@@ -48,7 +48,7 @@ function LineChart02({
               parser: 'YYYY-MM-DD',
               unit: 'month',
               displayFormats: {
-                month: 'MMM YY',
+                month: 'MMM YYYY',
               },
             },
             border: {
@@ -58,7 +58,7 @@ function LineChart02({
               display: true,
             },
             ticks: {
-              autoSkipPadding: 1,
+              autoSkipPadding: 48,
               maxRotation: 0,
             },
           },
@@ -92,7 +92,7 @@ function LineChart02({
             }
             // Reuse the built-in legendItems generator
             const items = c.options.plugins.legend.labels.generateLabels(c);
-            items.slice(0, 2).forEach((item) => {
+            items.slice(0, 4).forEach((item) => {
               const li = document.createElement('li');
               li.style.marginLeft = tailwindConfig().theme.margin[3];
               // Button element

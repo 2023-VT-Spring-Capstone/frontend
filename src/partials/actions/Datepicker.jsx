@@ -1,7 +1,9 @@
-import React from 'react';
+import React,  { useState }  from 'react';
 import Flatpickr from 'react-flatpickr';
 
-function Datepicker() {
+function Datepicker({ onSelectDates }) {
+
+  const [selectedDates, setSelectedDates] = useState([]);
 
   const options = {
     mode: 'range',
@@ -16,6 +18,8 @@ function Datepicker() {
     },
     onChange: (selectedDates, dateStr, instance) => {
       instance.element.value = dateStr.replace('to', '-');
+      setSelectedDates(selectedDates);
+      onSelectDates(selectedDates[0], selectedDates[1]);
     },
   }
 

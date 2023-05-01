@@ -6,7 +6,8 @@ function SearchModal({
   id,
   searchId,
   modalOpen,
-  setModalOpen
+  setModalOpen,
+  onSearch
 }) {
 
   const modalContent = useRef(null);
@@ -35,6 +36,18 @@ function SearchModal({
   useEffect(() => {
     modalOpen && searchInput.current.focus();
   }, [modalOpen]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const tickerSymbol = searchInput.current.value;
+    onSearch(tickerSymbol);
+    const keyHandler = ({ keyCode }) => {
+      if (!modalOpen || keyCode !== 13) return;
+      setModalOpen(false);
+    };
+    document.addEventListener('keydown', keyHandler);
+    return () => document.removeEventListener('keydown', keyHandler);
+  };
 
   return (
     <>
@@ -66,7 +79,7 @@ function SearchModal({
       >
         <div ref={modalContent} className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
           {/* Search form */}
-          <form className="border-b border-slate-200">
+          <form className="border-b border-slate-200" onSubmit={handleSubmit}>
             <div className="relative">
               <label htmlFor={searchId} className="sr-only">Search</label>
               <input id={searchId} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="search" placeholder="Search Anything…" ref={searchInput} />
