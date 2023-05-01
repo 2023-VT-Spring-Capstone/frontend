@@ -1,7 +1,7 @@
 # High Volatility Stocks Analyzer
 
 
-![image](https://user-images.githubusercontent.com/14934562/235375707-7324aa5a-d50f-4da5-9527-4a65f0035eb4.png)
+![image](https://user-images.githubusercontent.com/14934562/235499982-454e0818-9d83-4825-bd21-a0c9b5f84b9d.png)
 
 ![image](https://user-images.githubusercontent.com/14934562/235495217-08130562-9cc1-48d2-af7c-d9711f8bbc9c.png)
 
